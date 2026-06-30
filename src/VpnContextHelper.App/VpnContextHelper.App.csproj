@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>VpnContextHelper</AssemblyName>
+    <RootNamespace>VpnContextHelper.App</RootNamespace>
+    <!-- Runs as the current user — never requests elevation. -->
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- Run on the installed .NET 10 desktop runtime without requiring the net8 runtime. -->
+    <RollForward>Major</RollForward>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VpnContextHelper.Core\VpnContextHelper.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,46 @@
+{
+  // VPN Context Helper configuration.
+  // Copy this file to config/config.json and replace the PLACEHOLDER values below with your
+  // real company/client hostnames and internal subnets. config/config.json is git-ignored.
+  // This tool is read-only: these values are only used for reachability checks and reporting.
+
+  "pollIntervalSeconds": 30,
+  "probeTimeoutMs": 2000,
+  "fortiClientPath": "C:\\Program Files\\Fortinet\\FortiClient\\FortiClient.exe",
+
+  // A network is treated as "trusted/on-net" if a connected adapter advertises one of these DNS
+  // suffixes, or if any beacon host below is reachable (use an office-only host:port).
+  "trustedNetwork": {
+    "dnsSuffixes": ["corp.example.com"],
+    "beacons": [
+      { "name": "office-beacon", "host": "PLACEHOLDER-office-only-host.example.com", "port": 443 }
+    ]
+  },
+
+  // Your employer's resources. Mark targets that should be reachable via ZTNA with "ztna".
+  "companyAccess": {
+    "label": "Company",
+    "vpnProfileName": "Company VPN",
+    "internalCidrs": ["10.0.0.0/16"],
+    "targets": [
+      { "name": "Git", "host": "git.example.com", "port": 443, "expectVia": "ztna" },
+      { "name": "Wiki", "host": "wiki.example.com", "port": 443, "expectVia": "ztna" }
+    ]
+  },
+
+  // The client engagement reached over a separate FortiClient VPN profile.
+  "clientAccess": {
+    "label": "Client",
+    "vpnProfileName": "Client VPN",
+    "internalCidrs": ["172.16.0.0/12"],
+    "targets": [
+      { "name": "Client app", "host": "app.client.example", "port": 443, "expectVia": "vpn" }
+    ]
+  },
+
+  "redaction": {
+    "maskMacAddresses": true,
+    "maskUsernames": true,
+    "extraPatterns": []
+  }
+}

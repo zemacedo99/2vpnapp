@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/VpnContextHelper.App/VpnContextHelper.App.csproj" />
+    <Project Path="src/VpnContextHelper.Cli/VpnContextHelper.Cli.csproj" />
+    <Project Path="src/VpnContextHelper.Core/VpnContextHelper.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/VpnContextHelper.Tests/VpnContextHelper.Tests.csproj" />
+  </Folder>
+</Solution>
