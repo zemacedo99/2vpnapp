@@ -6,6 +6,10 @@
 # Local working config may contain internal hostnames/subnets — keep it out of source control.
 config/config.json
 
+# Local-only deny-list of real internal tokens for the no-secrets guard test (never commit).
+config/sensitive-tokens.local
+*.local
+
 # Generated artifacts (created on demand) — may contain real internal values
 report.md
 *-report.md

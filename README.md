@@ -47,7 +47,7 @@ optional local log — both passed through a secret redactor first.
 | `src/VpnContextHelper.Core` | Pure logic: route/ipconfig parsers, VPN-state + overlap analysis, reachability, redactor, report/IT-request builders. No I/O in the parsers — fully unit-tested. |
 | `src/VpnContextHelper.Cli` (`vpnhelper`) | Headless command-line tool: `status`, `report`, `it-request`. |
 | `src/VpnContextHelper.App` (`VpnContextHelper`) | WPF system-tray app with a status window and buttons. |
-| `tests/VpnContextHelper.Tests` | 54 xUnit tests (route parsing, adapter detection, config, redaction, analysis). |
+| `tests/VpnContextHelper.Tests` | 77 xUnit tests (route/adapter/config/redaction/analysis + FortiClient dual-connect feasibility, native-VPN feasibility, route/DNS conflict detection, no-secrets-committed guard). |
 
 ## Requirements
 
@@ -86,8 +86,17 @@ dotnet src\VpnContextHelper.Cli\bin\Release\net8.0\vpnhelper.dll report report.m
 # pre-filled ZTNA request for IT (Markdown)
 dotnet src\VpnContextHelper.Cli\bin\Release\net8.0\vpnhelper.dll it-request it-request.md
 
+# host-only dual-VPN feasibility verdict (analysis only — never connects)
+dotnet src\VpnContextHelper.Cli\bin\Release\net8.0\vpnhelper.dll connect-both
+dotnet src\VpnContextHelper.Cli\bin\Release\net8.0\vpnhelper.dll dry-run-routes   # read-only; applies nothing
+dotnet src\VpnContextHelper.Cli\bin\Release\net8.0\vpnhelper.dll disconnect       # explains; no automation
+
 # add --config <path> to any command to point at a specific config file
 ```
+
+> `connect-both` / `disconnect` are **guided only** — this tool never establishes or tears down a
+> tunnel, never handles credentials/MFA, and never mutates routes or DNS. On this setup `connect-both`
+> reports that host-only dual VPN is **not possible** (both profiles are SSL-VPN); see the docs below.
 
 Example output (placeholder values; run it yourself for real data):
 
@@ -174,7 +183,11 @@ To **auto-start** the tray app at login (optional), create a shortcut to the bui
 ## Documentation
 
 * [`docs/quickstart.md`](docs/quickstart.md) — what to run at home / in the office / on the client VPN.
-* [`docs/feasibility.md`](docs/feasibility.md) — Phase 0 evidence and conclusions.
+* [`docs/host-only-dual-vpn-feasibility.md`](docs/host-only-dual-vpn-feasibility.md) — can both VPNs run at once on the host? (verdict + evidence)
+* [`docs/forticlient-capabilities.md`](docs/forticlient-capabilities.md) — version, EMS, profile types, Multi-Connect, CLI.
+* [`docs/routing-dns-analysis.md`](docs/routing-dns-analysis.md) — route/DNS conflict analysis (nothing applied).
+* [`docs/limitations.md`](docs/limitations.md) — hard limits and the stop-condition rationale.
+* [`docs/feasibility.md`](docs/feasibility.md) — earlier Phase 0 evidence and conclusions.
 * [`docs/architecture.md`](docs/architecture.md) — options A–D evaluated; what was built and why.
 * [`docs/vm-isolation-workflow.md`](docs/vm-isolation-workflow.md) — Option C, the VM fallback.
 * [`docs/it-request-template.md`](docs/it-request-template.md) — Option B request to IT.
